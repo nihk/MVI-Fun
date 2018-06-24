@@ -38,24 +38,18 @@ class SearchCountriesFragment : MviFragment<SearchCountriesView, SearchCountries
 
     override fun typedText() = search.textChanges()
 
-    override fun render(states: List<Resource<Country>>) {
-        adapter.submitList(states)
-    }
+    override fun render(states: List<Resource<Country>>) = adapter.submitList(states)
 
     class CountriesAdapter
         : ListAdapter<Resource<Country>, CountryViewHolder>(CountryDiffCallback) {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
-            val view: View = LayoutInflater.from(parent.context)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_country, parent, false)
+                .let { CountryViewHolder(it) }
 
-            return CountryViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: CountryViewHolder, position: Int) =
             holder.bind(getItem(position))
-        }
-
     }
 
     class CountryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -68,15 +62,15 @@ class SearchCountriesFragment : MviFragment<SearchCountriesView, SearchCountries
             }
         }
 
-        fun setLoading(isLoading: Boolean) {
+        private fun setLoading(isLoading: Boolean) {
             itemView.progressBar.visible = isLoading
         }
 
-        fun setError(isError: Boolean) {
+        private fun setError(isError: Boolean) {
             itemView.error.visible = isError
         }
 
-        fun setSuccess(country: Country) {
+        private fun setSuccess(country: Country) {
             itemView.success_group.visible = true
             itemView.flag.text = country.flag
             itemView.name.text = country.name
